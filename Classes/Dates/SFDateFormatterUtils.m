@@ -26,6 +26,7 @@ static NSMutableDictionary * _dateFormattersDictionary;
       return nil;
    }
 
+   // Comment
    @synchronized(_dateFormattersDictionary) {
    
        NSDateFormatter * result = [_dateFormattersDictionary objectForKey:dateFormat];
