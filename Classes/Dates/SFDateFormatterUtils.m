@@ -26,7 +26,7 @@ static NSMutableDictionary * _dateFormattersDictionary;
       return nil;
    }
 
-   synchronized(_dateFormattersDictionary) {
+   @synchronized(_dateFormattersDictionary) {
    
        NSDateFormatter * result = [_dateFormattersDictionary objectForKey:dateFormat];
        
@@ -54,7 +54,7 @@ static NSMutableDictionary * _dateFormattersDictionary;
       return nil;
    }
 
-   synchronized(_dateFormattersDictionary) {
+   @synchronized(_dateFormattersDictionary) {
    
        // Concatenatig locale + dateFormat strings to receive unique key
        NSString * key = [NSString stringWithFormat:@"%@|!|%@", dateFormat,localeString];
@@ -88,7 +88,7 @@ static NSMutableDictionary * _dateFormattersDictionary;
         internalAbbreviation = [localTimeZone abbreviation];
     }
 
-    synchronized(_dateFormattersDictionary) {
+    @synchronized(_dateFormattersDictionary) {
     
         // Concatenatig abbreviation + dateFormat strings to receive unique key
         NSString * key = [NSString stringWithFormat:@"%@|TZ|%@", dateFormat,internalAbbreviation];
