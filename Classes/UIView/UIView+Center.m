@@ -5,7 +5,7 @@
 // Copyright (c) 2013 Stanfy LLC. All rights reserved.
 //
 #import "UIView+Center.h"
-
+#import "UIView+SFAdditions.h"
 
 @implementation UIView (Center)
 
