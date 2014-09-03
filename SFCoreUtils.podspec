@@ -1,15 +1,17 @@
 Pod::Spec.new do |s|
 
   s.name         = 'SFCoreUtils'
-  s.version      = '0.0.4'
+  s.version      = '0.0.7'
   s.summary      = 'UIView Helpers, DateFormatters, Runtime.'
 
   s.homepage     = 'http://stanfy.com'
   s.license      = 'MIT'
 
-  s.author       = { 'Paul Taykalo' => 'ptaykalo@stanfy.com.ua' }
+  s.authors       = { 'Paul Taykalo' => 'ptaykalo@stanfy.com.ua', 
+                      'Anastasi Voitova' => 'avoitova@stanfy.com.ua', 
+                      'Sergey Kovalenko' => 'skovalenko@stanfy.com.ua' }
 
-  s.source       = { :git => 'https://github.com/stanfy/SFCoreUtils.git', :tag => '0.1.4' }
+  s.source       = { :git => 'https://github.com/stanfy/SFCoreUtils.git', :tag => '0.1.7' }
 
   s.platform     = :ios, '4.3'
 
@@ -38,6 +40,14 @@ Pod::Spec.new do |s|
 
   s.subspec 'NSCoding' do |sp|
     sp.source_files = 'Classes/NSCoding/*.{h,m}'
+  end
+
+  s.subspec 'NSObject' do |sp|
+    sp.source_files = 'Classes/NSObject/*.{h,m}'
+  end
+
+  s.subspec 'Utils' do |sp|
+    sp.source_files = 'Classes/Utils/*.{h,m}'
   end
 
 end
