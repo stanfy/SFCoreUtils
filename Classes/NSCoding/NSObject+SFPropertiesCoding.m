@@ -6,17 +6,20 @@
 //  Copyright (c) 2012 Stanfy, LLC. All rights reserved.
 //
 
-#import "NSObject+NSPropertiesCoding.h"
+#import "NSObject+SFPropertiesCoding.h"
 #import <objc/runtime.h>
 
 @implementation NSObject (NSPropertiesCoding)
 
-// ios8 workaround
+// ios8 workaround, skip readonly properties
 // read more
 // http://www.redwindsoftware.com/blog/post/2014/08/20/NSObject-has-some-new-properties-in-iOS-8.aspx
-- (NSArray *)ios8Properties {
-    return @[@"superclass", @"hash", @"description",
-             @"debugDescription", @"classForKeyedArchiver"];
+- (BOOL)isReadOnly:(objc_property_t)propertyObject {
+    // http://stackoverflow.com/a/18455154
+    const char *propertyAttributes = property_getAttributes(propertyObject);
+    NSArray *attributes = [[NSString stringWithUTF8String:propertyAttributes] componentsSeparatedByString:@","];
+    
+    return [attributes containsObject:@"R"];
 }
 
 
@@ -35,8 +38,9 @@
                     NSString * autoencodedPropertyName = [NSString stringWithFormat:@"autoencoded_%s", propertyNameC];
                     
                     id value = [self valueForKey:propertyName];
+                    BOOL isReadOnly = [self isReadOnly:propertyObject];
                     
-                    if (value && ![[self ios8Properties] containsObject:propertyName]) {
+                    if (value && !isReadOnly) {
                         [aCoder encodeObject:value forKey:autoencodedPropertyName];
                     }
                 }
@@ -58,13 +62,15 @@
         unsigned int propertiesCount = 0;
         objc_property_t * properties = class_copyPropertyList(clz, &propertiesCount);
         for (int i = 0; i < propertiesCount; i++) {
-            objc_property_t property = properties[i];
-            const char * propertyNameC = property_getName(property);
+            objc_property_t propertyObject = properties[i];
+            const char * propertyNameC = property_getName(propertyObject);
             NSString * propertyName = [NSString stringWithCString:propertyNameC encoding:NSUTF8StringEncoding];
             NSString * autoencodedPropertyName = [NSString stringWithFormat:@"autoencoded_%s", propertyNameC];
             
             id decodedObject = [aDecoder decodeObjectForKey:autoencodedPropertyName];
-            if (decodedObject && ![[self ios8Properties] containsObject:propertyName]) {
+            BOOL isReadOnly = [self isReadOnly:propertyObject];
+            
+            if (decodedObject && !isReadOnly) {
                 [self setValue:decodedObject forKey:propertyName];
             }
         }
@@ -77,4 +83,3 @@
 }
 
 @end
-
