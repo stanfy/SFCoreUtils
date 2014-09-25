@@ -25,7 +25,7 @@
 
 - (void)encodePropertiesWithCoder:(NSCoder *)aCoder {
     Class clz = [self class];
-    while (clz) {
+    while (clz && clz != [NSObject class]) {
         
         unsigned int propertiesCount = 0;
         objc_property_t * properties = class_copyPropertyList(clz, &propertiesCount);
@@ -58,7 +58,7 @@
 
 - (void)decodePropertiesWithCoder:(NSCoder *)aDecoder {
     Class clz = [self class];
-    while (clz) {
+    while (clz && clz != [NSObject class]) {
         unsigned int propertiesCount = 0;
         objc_property_t * properties = class_copyPropertyList(clz, &propertiesCount);
         for (int i = 0; i < propertiesCount; i++) {
