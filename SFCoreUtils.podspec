@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
     sp.source_files = 'Classes/Runtime/*.{h,m}'
   end
 
-  s.subspec 'Non Retaining' do |sp|
+  s.subspec 'NonRetaining' do |sp|
     sp.source_files = 'Classes/NonRetaining/*.{h,m}'
   end
 
