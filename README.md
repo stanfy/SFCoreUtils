@@ -192,3 +192,28 @@ Useful when working with diffent class types in collection.
 	}
 }];
 ```
+
+
+## SFDateFormatterUtils
+
+Creates and caches instance of NSDateFormatter to minimize costs for allocating date formatter instances. Supports locale and date styles.
+
+Usage:
+
+``` objective-c
+NSDateFormatter * dateFormatter = [SFDateFormatterUtils dateFormatterWithFormat:@"MMMM dd, yyyy" andLocale:@"en_US_POSIX"];
+NSString * dateString = [dateFormatter stringFromDate:self];
+```
+
+``` objective-c
+// 2013-08-24T13:58:22.222+03:00
++ (NSDate * )dateFromISOString:(NSString * )string {
+    NSDateFormatter *formatter = [SFDateFormatterUtils dateFormatterWithFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"];
+    NSDate * date = [formatter dateFromString:string];
+    return date;
+}
+```
+
+Read more why creating a lof of NSDateFormatter is usually a bad idea
+http://stackoverflow.com/a/4442389
+
