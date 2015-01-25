@@ -21,6 +21,7 @@ Run code only on iOS7 like this:
 ```
 
 Or on both iOS7 and iOS6:
+
 ``` objective-c
     [VersionSupportHelper onDeviceVersionGreaterOrEqualToVersion:7.0 do:^{
         UIImage * image = [UIImage imageNamed:@"navigation-bar-blue-transparent-ios7"];
@@ -30,7 +31,19 @@ Or on both iOS7 and iOS6:
         UIImage * image = [[UIImage imageNamed:@"navigation-bar-blue-transparent"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 8, 0, 8)];
         [navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     }];
+```
 
+iOS8 example:
+
+``` objective-c
+[SFVersionSupportHelper onDeviceVersionGreaterOrEqualToVersion:8.0 do:^{
+    UIApplication * sharedApplication = [UIApplication sharedApplication];
+    if ([sharedApplication respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        [sharedApplication registerUserNotificationSettings:
+            [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIRemoteNotificationTypeSound)
+                                              categories:nil]];
+    }
+}];
 ```
 
 Easy to use! 
@@ -42,4 +55,76 @@ Supports different conditions:
 
 Useful even for minor releases!
 
-Compatible with iOS8! (but I haven't example yet =) )
+
+### UsefulBlocks
+
+Don't want to open http://fuckingblocksyntax.com/ every time, but want to use block easy? Try these:
+
+``` objective-c
+typedef void (^SFSuccessBlock)(id result);
+
+typedef void (^SFErrorBlock)(NSError *error);
+
+typedef void (^SFResponseErrorBlock)(id response, NSError *error);
+
+typedef void (^SFActionBlock)();
+```
+
+Usage:
+
+``` objective-c
+- (void)signUpUser:(NSString *)name
+             email:(NSString *)email
+          password:(NSString *)password
+      successBlock:(SFSuccessBlock)successBlock
+        errorBlock:(SFErrorBlock)errorBlock {
+
+    // send request here
+    
+    if (SUCCESS) {
+    	// handle success
+    	if (successBlock) {
+    		successBlock(responseObject);
+    	}	
+    } else {
+    	// handle error
+        if (errorBlock) {
+            errorBlock(responseObject, serverError);
+        }
+    }
+}
+```
+
+Or like this:
+
+**SFViewController.h**
+
+``` objective-c
+@interface SFViewController : UIViewController
+
+@property (nonatomic, copy) SFActionBlock dismissalBlock;
+
+@end
+```
+
+**SFViewController.m**
+
+``` objective-c
+- (void)hideController {
+ 	__weak typeof(self) weakSelf = self;
+	[self dismissViewControllerAnimated:YES completion:^(){
+            if (weakSelf.dismissalBlock) {
+                weakSelf.dismissalBlock();
+            }
+        }];
+}
+```
+
+**somewhere**
+
+``` objective-c
+SFViewController * someController = [SFViewController new];
+someController.dismissalBlock = ^{
+	// do here smth
+ };
+ ```
