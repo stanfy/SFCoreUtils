@@ -2,6 +2,7 @@
 
 Number of useful beans: DateFormatter, UIView macroses, non-retaining arrays etc
 
+
 ## Utils
 
 
@@ -130,7 +131,7 @@ someController.dismissalBlock = ^{
  ```
  
  
- ### UsefulQueues
+### UsefulQueues
  
  Simple macroses to use with gcd code:
  
@@ -142,3 +143,52 @@ someController.dismissalBlock = ^{
 	});
  });
  ```
+ 
+ 
+ 
+## NSObject
+
+### NSObject+Blocks
+
+Useful, but if you use this a lot, usually it means that your code smells.  
+
+``` objective-c
+	// disable idle timer (in case user has slept during session - do not waste battery)
+ 	[self performBlock:^{
+     	[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    } afterDelay:30];
+```
+
+Same as dispatch_after, but you can cancel block:
+
+``` objective-c
+- (void)syncProductList {
+    if (self.syncBlock) {
+        [CHSyncManager cancelBlock:self.syncBlock];
+        self.syncBlock = nil;
+        NSLog(@"%@ cancel block", [self class]);
+    }
+
+    self.syncBlock = [CHSyncManager performBlock:^{
+        NSLog(@"%@ schedule delayed block", [self class]);
+        [self delayedSyncProductList];
+        
+    } afterDelay:3];
+}
+```
+
+
+### NSObject+ClassCast
+
+Useful when working with diffent class types in collection. 
+
+``` objective-c
+[notifications enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL * stop) {
+	ATNotification * notification = [object castOrNil:[ATNotification class]];
+
+	if (notification) {
+		NSNumber * notificationID = notification.ID;
+		//...
+	}
+}];
+```
