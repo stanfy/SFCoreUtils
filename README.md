@@ -128,3 +128,17 @@ someController.dismissalBlock = ^{
 	// do here smth
  };
  ```
+ 
+ 
+ ### UsefulQueues
+ 
+ Simple macroses to use with gcd code:
+ 
+ ``` objective-c
+ dispatch_async(BACKGROUND_QUEUE, ^{
+    // do smth heavy in background
+    dispatch_async(MAIN_QUEUE, ^{
+    	// return to main queue
+	});
+ });
+ ```
