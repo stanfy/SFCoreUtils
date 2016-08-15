@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = 'SFCoreUtils'
-  s.version      = '0.0.10'
+  s.version      = '0.0.11'
   s.summary      = 'UIView Helpers, DateFormatters, Runtime.'
 
   s.homepage     = 'http://stanfy.com'
