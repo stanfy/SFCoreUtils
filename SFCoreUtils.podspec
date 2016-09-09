@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = 'SFCoreUtils'
-  s.version      = '0.0.11'
+  s.version      = '0.0.12'
   s.summary      = 'UIView Helpers, DateFormatters, Runtime.'
 
   s.homepage     = 'http://stanfy.com'
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
                       'Anastasi Voitova' => 'avoitova@stanfy.com.ua', 
                       'Sergey Kovalenko' => 'skovalenko@stanfy.com.ua' }
 
-  s.source       = { :git => 'https://github.com/stanfy/SFCoreUtils.git', :tag => '0.1.10' }
+  s.source       = { :git => 'https://github.com/stanfy/SFCoreUtils.git', :tag => '0.1.12' }
 
   s.platform     = :ios, '4.3'
 
